@@ -166,13 +166,13 @@ flutter test test/auth_provider_test.dart
 
 The automated tests verify:
 
-Initial user profiles are loaded correctly.
-Users can sign in with valid email addresses.
-Sign-in fails for unknown email addresses.
-New users can register and are automatically signed in.
-Duplicate email registration is rejected.
-Membership upgrades update the user's membership and persist locally.
-Profile deletion removes the selected user and signs them out.
+- Initial user profiles are loaded correctly.
+- Users can sign in with valid email addresses.
+- Sign-in fails for unknown email addresses.
+- New users can register and are automatically signed in.
+- Duplicate email registration is rejected.
+- Membership upgrades update the user's membership and persist locally.
+- Profile deletion removes the selected user and signs them out.
 
 ## Implementation Notes
 
