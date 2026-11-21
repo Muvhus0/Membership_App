@@ -1,30 +1,58 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:membership_app/main.dart';
+import 'package:membership_app/models/feature_model.dart';
+import 'package:membership_app/models/membership_model.dart';
+import 'package:membership_app/models/user_model.dart';
+import 'package:membership_app/providers/auth_provider.dart';
+import 'package:membership_app/providers/membership_provider.dart';
+import 'package:membership_app/screens/auth/sign_in_screen.dart';
+import 'package:membership_app/services/storage_service.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('SignInScreen renders correctly with test accounts', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final storageService = await StorageService.getInstance();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    final testUsers = [
+      const UserModel(
+        id: 'usr_1001',
+        name: 'Naledi Mokoena',
+        email: 'naledi.mokoena@example.com',
+        membershipId: 'starter',
+      ),
+    ];
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final testMemberships = [
+      const MembershipModel(
+        id: 'starter',
+        name: 'Starter',
+        features: [
+          FeatureModel(id: 'browse_catalogue', name: 'Browse Catalogue'),
+        ],
+      ),
+    ];
+
+    final authProvider = AuthProvider(storageService)..initialize(testUsers);
+    final membershipProvider = MembershipProvider()
+      ..initialize(testMemberships);
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: authProvider),
+          ChangeNotifierProvider.value(value: membershipProvider),
+        ],
+        child: const MaterialApp(home: SignInScreen()),
+      ),
+    );
+
+    expect(find.text('Sign In'), findsWidgets);
+    expect(find.text('Email Address'), findsOneWidget);
   });
 }
