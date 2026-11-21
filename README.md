@@ -146,6 +146,34 @@ User data and membership changes are persisted locally using SharedPreferences.
 
 Initial user seeding is performed only once. Deleting all preloaded users does not cause them to be automatically restored on subsequent launches.
 
+## Running Tests
+
+The application includes automated tests to verify authentication, user registration, membership management, and local data persistence.
+
+### Run all tests
+From the project root directory, run:
+```bash
+flutter test
+```
+### Run a specific test file
+
+To run the authentication and user management tests:
+```bash
+flutter test test/auth_provider_test.dart
+```
+
+### Test Coverage
+
+The automated tests verify:
+
+Initial user profiles are loaded correctly.
+Users can sign in with valid email addresses.
+Sign-in fails for unknown email addresses.
+New users can register and are automatically signed in.
+Duplicate email registration is rejected.
+Membership upgrades update the user's membership and persist locally.
+Profile deletion removes the selected user and signs them out.
+
 ## Implementation Notes
 
 - Membership features are derived from the selected membership data.
@@ -157,6 +185,3 @@ Initial user seeding is performed only once. Deleting all preloaded users does n
 ## Author
 
 **Muvhuso Mutshinye**
-
-
-
