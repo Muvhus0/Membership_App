@@ -43,9 +43,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
       if (!mounted) return;
 
-      if (!success) {
+      if (success) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      } else {
         setState(() {
           _errorMessage = 'No profile found with this email address.';
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Sign in error: ${e.toString()}';
         });
       }
     } finally {
@@ -59,9 +67,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
-    final users = authProvider.users;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
