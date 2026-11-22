@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/feature_model.dart';
@@ -47,14 +48,25 @@ class HomeTab extends StatelessWidget {
       children: [
         Text(
           'Welcome, ${user.name}!',
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.w600,
+            fontSize: 22,
+            letterSpacing: 1.2,
+          ),
         ),
-        const SizedBox(height: 4),
-        Text('Current Membership: ${membership?.name ?? user.membershipId}'),
+        SizedBox(height: 4),
+        Text(
+          'Current Membership: ${membership?.name ?? user.membershipId}',
+          style: GoogleFonts.inter(fontWeight: FontWeight.normal, fontSize: 14),
+        ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           'Membership Features',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+            letterSpacing: 0.5,
+          ),
         ),
         const SizedBox(height: 8),
         if (features.isEmpty)
@@ -66,6 +78,7 @@ class HomeTab extends StatelessWidget {
               onTap: () => _showFeatureDetails(context, feature),
             ),
           ),
+        const SizedBox(height: 8),
       ],
     );
   }

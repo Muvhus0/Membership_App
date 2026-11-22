@@ -23,6 +23,7 @@ The application allows users to register, sign in, select a membership tier, vie
 | SharedPreferences | Local data persistence                 |
 | UUID              | Unique user ID generation              |
 | Google Fonts      | Custom fonts                           |
+| HugeIcons         | Icon library for modern icons          |
 
 ## Membership Tiers
 
