@@ -55,4 +55,58 @@ void main() {
     expect(find.text('Sign In'), findsWidgets);
     expect(find.text('Email Address'), findsOneWidget);
   });
+
+  testWidgets(
+    'SignInScreen submits when email is entered and button is pressed',
+    (WidgetTester tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final storageService = await StorageService.getInstance();
+
+      final testUsers = [
+        const UserModel(
+          id: 'usr_1001',
+          name: 'Naledi Mokoena',
+          email: 'naledi.mokoena@example.com',
+          membershipId: 'starter',
+        ),
+      ];
+
+      final testMemberships = [
+        const MembershipModel(
+          id: 'starter',
+          name: 'Starter',
+          features: [
+            FeatureModel(id: 'browse_catalogue', name: 'Browse Catalogue'),
+          ],
+        ),
+      ];
+
+      final authProvider = AuthProvider(storageService)..initialize(testUsers);
+      final membershipProvider = MembershipProvider()
+        ..initialize(testMemberships);
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: authProvider),
+            ChangeNotifierProvider.value(value: membershipProvider),
+          ],
+          child: const MaterialApp(home: SignInScreen()),
+        ),
+      );
+
+      //Enter email
+      await tester.enterText(
+        find.byType(TextFormField),
+        'naledi.mokoena@example.com',
+      );
+      await tester.pump();
+
+      //tap the custom button
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pump();
+
+      expect(authProvider.isAuthenticated, isTrue);
+    },
+  );
 }
