@@ -1,8 +1,6 @@
 
-# Name displayed in the GitHub Actions tab
 name: Flutter CI/CD
 
-# Events that trigger the workflow
 on:
   push:
     branches:
@@ -12,46 +10,35 @@ on:
     branches:
       - main
 
-#Jobs to execute
 jobs:
   build:
-    #GitHub provides an Ubuntu virtual machine
     runs-on: ubuntu-latest
 
-    #Steps executed in sequence
     steps:
-
-      #Download repository source code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      #Install Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.44.9'
           channel: stable
           cache: true
 
-      #Display Flutter and Dart versions
       - name: Display Flutter version
         run: flutter --version
 
-      #Install project dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      #Verify Dart formatting
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
 
-      #Analyze the Flutter project
       - name: Analyze project
         run: flutter analyze
 
-      #Execute automated tests
       - name: Run tests
         run: flutter test
 
-      #Verify Android APK can be built
       - name: Build Android APK
         run: flutter build apk --debug
